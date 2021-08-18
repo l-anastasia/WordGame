@@ -1,4 +1,5 @@
 from enum import Enum
+import string
 
 
 class WordGame:
@@ -15,6 +16,10 @@ class WordGame:
                 self.dict_of_all_words[word[0]] = [word]
                 continue
             self.dict_of_all_words[word[0]].append(word)
+        # TODO: add comment
+        for letter in string.ascii_lowercase:
+            if letter not in self.dict_of_all_words:
+                self.dict_of_all_words[letter] = []
 
     class Verdict(Enum):
         OK = 0
