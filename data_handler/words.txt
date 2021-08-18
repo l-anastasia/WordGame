@@ -1,0 +1,15 @@
+cat
+car
+albino
+war
+quest
+reset
+bin
+cast
+trinket
+fall
+number
+port
+key
+dictionary
+look

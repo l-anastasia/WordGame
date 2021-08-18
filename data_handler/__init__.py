@@ -1,0 +1,1 @@
+from .data_handler import prepare_all_words_list
