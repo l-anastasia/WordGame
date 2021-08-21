@@ -46,8 +46,6 @@ class WordGame:
         return self.Verdict.OK
 
     def next_word(self, word):
-        if word == "i give up":
-            return 1
 
         self.used_words.append(word)
         self.dict_of_all_words[word[0]].remove(word)
