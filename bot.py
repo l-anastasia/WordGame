@@ -37,14 +37,12 @@ def surrender(message):
 @bot.message_handler(content_types=['text'])
 def play_game(message):
 
+    if not game_dict:
+        bot.send_message(message.from_user.id, 'you need to start a new game first, type /newgame')
+        return
 
-    # to create /start handler
-    # to create a dict {user_id: game}
-    # to create /new_game - create a new game for user_id
-    # to create /surrender - finish the game
     word = message.text.lower()
-    # user_id = message.from_user.id
-    bot.send_message(message.from_user.id, message.from_user.id)
+
     verdict = game_dict[message.from_user.id].check_word(word)
     if verdict is WordGame.Verdict.NOT_WORD:
         bot.send_message(message.from_user.id, 'This is not a word')
