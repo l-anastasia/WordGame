@@ -37,7 +37,7 @@ def surrender(message):
 @bot.message_handler(content_types=['text'])
 def play_game(message):
 
-    answer = 0
+
     # to create /start handler
     # to create a dict {user_id: game}
     # to create /new_game - create a new game for user_id
@@ -60,14 +60,13 @@ def play_game(message):
 
     answer = game_dict[message.from_user.id].next_word(word)
 
-    if answer == 2:
+    if not answer:
         bot.send_message(message.from_user.id, 'You won')
         del game_dict[message.from_user.id]
         bot.send_message(message.from_user.id, 'thank you for the game, if you want to play again type /newgame')
 
-    if answer != 2:
-        bot.send_message(message.from_user.id, answer)
-        game_dict[message.from_user.id].prev_word = answer
+    bot.send_message(message.from_user.id, answer)
+    game_dict[message.from_user.id].prev_word = answer
 
 
 # if __name__ == "__main__":

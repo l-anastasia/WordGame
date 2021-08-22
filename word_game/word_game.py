@@ -29,18 +29,12 @@ class WordGame:
 
     def check_word(self, word) -> Verdict:
         if word not in self.set_of_all_words:
-            # print("This is not a word")
             return self.Verdict.NOT_WORD
 
         if word in self.used_words:
-            # print("This word has been used already")
             return self.Verdict.USED_WORD
 
-        # if word == ["i give up"]:
-        #     return True
-
         if self.prev_word and word[0] != self.prev_word[-1]:
-            # print("Your word is not correct, try again")
             return self.Verdict.INCORRECT_WORD
 
         return self.Verdict.OK
@@ -51,7 +45,7 @@ class WordGame:
         self.dict_of_all_words[word[0]].remove(word)
 
         if not self.dict_of_all_words[word[-1]]: #checking if we have an answer
-            return 2
+            return None
 
         result = self.dict_of_all_words[word[-1]].pop()
         self.used_words.append(result)
