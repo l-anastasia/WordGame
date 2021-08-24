@@ -11,9 +11,18 @@ bot = telebot.TeleBot(token)
 
 game_dict = {}
 
+m_sur = 'thank you for the game, if you want to play again type /newgame'
+m_start = 'here will be instractions some day'
+m_no_game = 'you need to start a new game first, type /newgame'
+m_end = 'thank you for the game, if you want to play again type /newgame'
+m_not_a_word = 'This is not a word'
+m_used_word = 'This word has been used already'
+m_incorrect_word = 'Your word is not correct, try again'
+
+
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.from_user.id, 'here will be instraction some day')
+    bot.send_message(message.from_user.id, m_start)
 
 
 @bot.message_handler(commands=['newgame'])
@@ -31,29 +40,29 @@ def surrender(message):
     # user_id = message.from_user.id
     bot.send_message(message.from_user.id, game_dict)
     del game_dict[message.from_user.id]
-    bot.send_message(message.from_user.id, 'thank you for the game, if you want to play again type /newgame')
+    bot.send_message(message.from_user.id, m_sur)
 
 
 @bot.message_handler(content_types=['text'])
 def play_game(message):
 
     if not game_dict:
-        bot.send_message(message.from_user.id, 'you need to start a new game first, type /newgame')
+        bot.send_message(message.from_user.id, m_no_game)
         return
 
     word = message.text.lower()
 
     verdict = game_dict[message.from_user.id].check_word(word)
-    if verdict is WordGame.Verdict.NOT_WORD:
-        bot.send_message(message.from_user.id, 'This is not a word')
+    if verdict is WordGame.Verdict.NOT_A_WORD:
+        bot.send_message(message.from_user.id, m_not_a_word)
         return
 
     elif verdict is WordGame.Verdict.USED_WORD:
-        bot.send_message(message.from_user.id, 'This word has been used already')
+        bot.send_message(message.from_user.id, m_used_word)
         return
 
     elif verdict is WordGame.Verdict.INCORRECT_WORD:
-        bot.send_message(message.from_user.id, 'Your word is not correct, try again')
+        bot.send_message(message.from_user.id, m_incorrect_word)
         return
 
     answer = game_dict[message.from_user.id].next_word(word)
@@ -61,7 +70,7 @@ def play_game(message):
     if not answer:
         bot.send_message(message.from_user.id, 'You won')
         del game_dict[message.from_user.id]
-        bot.send_message(message.from_user.id, 'thank you for the game, if you want to play again type /newgame')
+        bot.send_message(message.from_user.id, m_end)
 
     bot.send_message(message.from_user.id, answer)
     game_dict[message.from_user.id].prev_word = answer

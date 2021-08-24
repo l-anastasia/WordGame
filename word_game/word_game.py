@@ -5,7 +5,6 @@ import string
 class WordGame:
     def __init__(self, all_words):
         self.set_of_all_words = set(all_words)
-        self.set_of_all_words.add("i give up")
         self.dict_of_all_words = {}
 
         self.used_words = []
@@ -23,13 +22,13 @@ class WordGame:
 
     class Verdict(Enum):
         OK = 0
-        NOT_WORD = 1
+        NOT_A_WORD = 1
         USED_WORD = 2
         INCORRECT_WORD = 3
 
     def check_word(self, word) -> Verdict:
         if word not in self.set_of_all_words:
-            return self.Verdict.NOT_WORD
+            return self.Verdict.NOT_A_WORD
 
         if word in self.used_words:
             return self.Verdict.USED_WORD
@@ -44,15 +43,10 @@ class WordGame:
         self.used_words.append(word)
         self.dict_of_all_words[word[0]].remove(word)
 
-        if not self.dict_of_all_words[word[-1]]: #checking if we have an answer
+        if not self.dict_of_all_words[word[-1]]:
             return None
 
         result = self.dict_of_all_words[word[-1]].pop()
         self.used_words.append(result)
 
         return result
-
-
-
-
-
