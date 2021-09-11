@@ -12,7 +12,11 @@ bot = telebot.TeleBot(token)
 game_dict = {}
 
 m_sur = 'thank you for the game, if you want to play again type /newgame'
-m_start = 'here will be instractions some day'
+m_start = (
+    'This game is simple.'
+    'You say a word, then bot will give you a word,'
+    'that starts with the last letter of the previous word and so on.'
+    'Type /newgame to start')
 m_no_game = 'you need to start a new game first, type /newgame'
 m_end = 'thank you for the game, if you want to play again type /newgame'
 m_not_a_word = 'This is not a word'
@@ -22,7 +26,9 @@ m_incorrect_word = 'Your word is not correct, try again'
 
 @bot.message_handler(commands=['start'])
 def start(message):
+    # 1
     bot.send_message(message.from_user.id, m_start)
+
 
 
 @bot.message_handler(commands=['newgame'])
@@ -30,8 +36,8 @@ def new_game(message):
     user_id = message.from_user.id
     all_words = prepare_all_words_list("words.txt")
     game_dict[user_id] = WordGame(all_words)
-    bot.send_message(user_id, user_id)
-    bot.send_message(user_id, game_dict)
+    game = WordGame(all_words)
+    # 2
     bot.send_message(user_id, 'enter your word, please')
 
 
@@ -39,13 +45,14 @@ def new_game(message):
 def surrender(message):
     user_id = message.from_user.id
     bot.send_message(user_id, game_dict)
-    del game_dict[user_id]
+    del game_dict[user_id] # 3
     bot.send_message(user_id, m_sur)
 
 
 @bot.message_handler(content_types=['text'])
 def play_game(message):
     user_id = message.from_user.id
+    # 4.1
     if not game_dict:
         bot.send_message(user_id, m_no_game)
         return
@@ -66,10 +73,10 @@ def play_game(message):
         return
 
     answer = game_dict[user_id].next_word(word)
-
+    # 4.2
     if not answer:
         bot.send_message(user_id, 'You won')
-        del game_dict[user_id]
+        del game_dict[user_id] # 4.3 = 3
         bot.send_message(user_id, m_end)
 
     bot.send_message(user_id, answer)
