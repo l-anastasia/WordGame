@@ -44,7 +44,6 @@ def new_game(message):
 @bot.message_handler(commands=['surrender'])
 def surrender(message):
     user_id = message.from_user.id
-    bot.send_message(user_id, game_dict)
     del game_dict[user_id] # 3
     bot.send_message(user_id, m_sur)
 
@@ -53,7 +52,7 @@ def surrender(message):
 def play_game(message):
     user_id = message.from_user.id
     # 4.1
-    if not game_dict:
+    if user_id not in game_dict:
         bot.send_message(user_id, m_no_game)
         return
 
